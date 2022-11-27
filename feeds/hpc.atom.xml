@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Fabian Köhler - HPC</title><link href="https://fkoehler.org/" rel="alternate"></link><link href="https://fkoehler.org/feeds/hpc.atom.xml" rel="self"></link><id>https://fkoehler.org/</id><updated>2021-11-05T11:31:00+01:00</updated><entry><title>Benchmarking and Frequency Scaling</title><link href="https://fkoehler.org/2021/11/benchmarking-frequency-scaling.html" rel="alternate"></link><published>2021-11-05T11:31:00+01:00</published><updated>2021-11-05T11:31:00+01:00</updated><author><name>Fabian Köhler</name></author><id>tag:fkoehler.org,2021-11-05:/2021/11/benchmarking-frequency-scaling.html</id><summary type="html">&lt;p&gt;In some benchmarking scenarios it might be necessary to disable &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; frequency scaling. I explain how to achieve this easily using the &lt;code&gt;cpupower&lt;/code&gt; tool.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Modern &lt;abbr title="Central Processing Units"&gt;CPUs&lt;/abbr&gt; employ frequency scaling techniques to adapt the frequency of their cores depending on the number of active cores as well as temperature and power constraints.
+In some scenarios this is undesirable when benchmarking the performance of a program.
+I recently encountered this problem when trying to benchmark a scientific code.
+I wanted to investigate its performance measured by its execution time in different parameter regimes.
+Since, the program under consideration is single-threaded it seems only natural to run multiple instances at once.
+Unfortunately, this leads to the aforementioned issue.
+Some runs might end earlier than others such that the number of active &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; cores reduces, and the active cores can run at a higher frequency.
+This would distort the runtime results since the program would suddenly run faster on these cores.
+So I explored how I could limit the &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; to a fixed maximum frequency that it can run at independent of the number of active jobs.&lt;/p&gt;
+&lt;p&gt;The first idea is to enter the &lt;abbr title="Unified Extensible Firmware Interface"&gt;UEFI&lt;/abbr&gt; and disabling the frequency scaling and turbo boost altogether.
+On my work machine sporting an &lt;a href="https://ark.intel.com/content/www/us/en/ark/products/134895/intel-core-i59500-processor-9m-cache-up-to-4-40-ghz.html"&gt;Intel i5-9500&lt;/a&gt; this leads to all cores only running at the base frequency of 3GHz.
+This potentially leaves a lot of performance on the table.&lt;/p&gt;
+&lt;p&gt;A better way is to use the &lt;code&gt;cpupower&lt;/code&gt; tool to limit the maximum frequency the &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; cores get boost to.
+But what frequency should you specify here?
+To answer this I ran one compute job per physical &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; core — six jobs in my case.
+This will yield the maximum load the &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; can encounter during the benchmark.
+&lt;a href="https://en.wikipedia.org/wiki/Hyper-threading"&gt;Hyper-threading&lt;/a&gt; is not available on my machine and the code performance scales differently across these logical cores such that it is best avoided in my case.
+I monitored the &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; frequency using the command&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;table class="highlight"&gt;
+&lt;tr&gt;&lt;td class="linenos"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/td&gt;&lt;td&gt;&lt;pre class="highlight"&gt;watch -n 0.5 -x sh -c &lt;span class="hljs-string"&gt;"cat /proc/cpuinfo | grep MHz"&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;p&gt;and saw that initially the &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; cores boosted above 4GHz.
+However, as the temperature of the cores increased (which I monitored using the excellent &lt;a href="https://github.com/aristocratos/btop"&gt;&lt;code&gt;btop&lt;/code&gt;&lt;/a&gt;) the frequency dropped.
+Therefore, I waited one hour for the system to reach a thermal equilibrium where the temperature is settled, and the &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; frequency would only fluctuate on a very small scale (in my case between 3640MHz and 3650MHz).
+From these observations I decided to run my &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; at 3600MHz leaving a small buffer should the frequency drop a bit more in very long runs (in the order of a few days).&lt;/p&gt;
+&lt;p&gt;The maximum frequency can than be set using the command&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;table class="highlight"&gt;
+&lt;tr&gt;&lt;td class="linenos"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/td&gt;&lt;td&gt;&lt;pre class="highlight"&gt;sudo cpupower frequency-set --max 3600MHz --governor performance&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;p&gt;On my system it was important to specify the &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; frequency scaling governor.
+Otherwise, the limit would only be effective when exploiting all cores.
+The cores could still exceed this limit if not all of them were active.&lt;/p&gt;
+&lt;p&gt;It might be that on your system these governors are called a little different.
+Calling &lt;code&gt;cpupower frequency-info&lt;/code&gt; will list the available governors and also show you the hardware frequency limits.
+Also, there exist other ways to influence &lt;abbr title="Central Processing Unit"&gt;CPU&lt;/abbr&gt; frequency behavior which are beyond the scope of this short blog post.
+However, as usual the &lt;a href="https://wiki.archlinux.org/title/CPU_frequency_scaling"&gt;Archlinux Wiki&lt;/a&gt; has some nice information on this topic!&lt;/p&gt;</content><category term="HPC"></category><category term="benchmark"></category><category term="scientific code"></category><category term="hpc"></category><category term="frequency scaling"></category><category term="turbo boost"></category><category term="cpupower"></category></entry></feed>
