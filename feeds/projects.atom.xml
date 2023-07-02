@@ -4,8 +4,11 @@
 &lt;a href="https://github.com/f-koehler/KTailctl"&gt;&lt;img alt="GitHub" src="https://img.shields.io/github/license/f-koehler/KTailctl"/&gt;&lt;/a&gt;
 &lt;a href="https://results.pre-commit.ci/latest/github/f-koehler/KTailctl/main"&gt;&lt;img alt="pre-commit.ci status" src="https://results.pre-commit.ci/badge/github/f-koehler/KTailctl/main.svg"/&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;A GUI to monitor and manage Tailscale on your Linux desktop, built using KDE Frameworks and Kirigami2.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;:warning: To get the most out of KTailctl (sending/receiving files, changing Tailscale settings, …) make sure you are the operator &lt;code&gt;tailscale up --operator=$USER&lt;/code&gt;!&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;a href="https://flathub.org/apps/org.fkoehler.KTailctl"&gt;&lt;img alt="Flathub" src="https://dl.flathub.org/assets/badges/flathub-badge-en.svg"/&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Main Window" src="screenshots/main.png"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Main Window" src="https://github.com/f-koehler/KTailctl/blob/main/screenshots/main.png"/&gt;&lt;/p&gt;
 &lt;h2&gt;Features&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;[x] Monitoring of tailscale status&lt;/li&gt;
