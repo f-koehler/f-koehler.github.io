@@ -8,7 +8,7 @@
 &lt;p&gt;:warning: To get the most out of KTailctl (sending/receiving files, changing Tailscale settings, …) make sure you are the operator &lt;code&gt;tailscale up --operator=$USER&lt;/code&gt;!&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;a href="https://flathub.org/apps/org.fkoehler.KTailctl"&gt;&lt;img alt="Flathub" src="https://dl.flathub.org/assets/badges/flathub-badge-en.svg"/&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Main Window" src="https://github.com/f-koehler/KTailctl/blob/main/screenshots/main.png"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Main Window" src="https://raw.githubusercontent.com/f-koehler/KTailctl/main/screenshots/main.png"/&gt;&lt;/p&gt;
 &lt;h2&gt;Features&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;[x] Monitoring of tailscale status&lt;/li&gt;
