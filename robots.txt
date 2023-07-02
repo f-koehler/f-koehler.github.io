@@ -1,1 +1,1 @@
-Sitemap: https://fkoehler.xyz/sitemap.xml
+Sitemap: https://fkoehler.org/sitemap.xml
